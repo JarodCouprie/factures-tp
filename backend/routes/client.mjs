@@ -10,4 +10,8 @@ router.get('/:id', ctrl.getItem)
 
 router.post("/", ctrl.createItem)
 
+router.patch("/:id", ctrl.patchItem)
+
+router.delete("/:id", ctrl.deleteItem)
+
 export default router;

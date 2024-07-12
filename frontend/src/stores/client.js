@@ -1,7 +1,7 @@
-import {billInterface} from "@/interfaces/bill";
+import {clientInterface} from "@/interfaces/client.js";
 import {defineStore} from "pinia";
 
-export const useBillStore = defineStore("bill", {
+export const useClientStore = defineStore("client", {
     state: () => ({
         items: {},
         item: null,
@@ -12,7 +12,7 @@ export const useBillStore = defineStore("bill", {
         async getItems() {
             this.loading = true;
             try {
-                const response = await this.$http.get("/bills");
+                const response = await this.$http.get("/clients");
                 this.items = response.data;
             } catch (e) {
                 console.error(e)
@@ -23,9 +23,9 @@ export const useBillStore = defineStore("bill", {
         async setItem(id) {
             try {
                 if (id === "new") {
-                    this.item = {...billInterface};
+                    this.item = {...clientInterface};
                 } else {
-                    const response = await this.$http.get(`/bills/${id}`);
+                    const response = await this.$http.get(`/clients/${id}`);
                     this.item = response.data;
                 }
             } catch (e) {
@@ -36,7 +36,7 @@ export const useBillStore = defineStore("bill", {
         async updateItem(form) {
             this.loading = true;
             try {
-                const response = await this.$http.patch(`/bills/${form.id}`, form);
+                const response = await this.$http.patch(`/clients/${form.id}`, form);
                 this.item = {...response.data}
             } catch (e) {
                 console.error(e)
@@ -45,7 +45,7 @@ export const useBillStore = defineStore("bill", {
         },
         async createItem(form) {
             try {
-                await this.$http.post(`/bills`, form)
+                await this.$http.post(`/clients`, form)
             } catch (e) {
                 console.error(e)
             }
@@ -54,7 +54,7 @@ export const useBillStore = defineStore("bill", {
         async deleteItem(id) {
             this.loading = true;
             try {
-                await this.$http.delete(`/bills/${id}`);
+                await this.$http.delete(`/clients/${id}`);
                 await this.getItems();
             } catch (e) {
                 console.error(e)

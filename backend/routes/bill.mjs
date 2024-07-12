@@ -12,6 +12,6 @@ router.post("/", ctrl.createItem)
 
 router.patch("/:id", ctrl.patchItem)
 
-router.delete("/", ctrl.deleteItem)
+router.delete("/:id", ctrl.deleteItem)
 
 export default router;
