@@ -396,7 +396,7 @@ export default {
     },
 
     onGoBack() {
-      this.$router.push({name: "bills"});
+      this.$router.back();
     },
 
     onDeleteBill() {

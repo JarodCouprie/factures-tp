@@ -259,7 +259,7 @@ export default {
     }),
 
     onGoBack() {
-      this.$router.push({name: "clients"});
+      this.$router.back();
     },
 
     onDeleteClient() {
