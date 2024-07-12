@@ -13,7 +13,7 @@ export const useClientStore = defineStore("client", {
             this.loading = true;
             try {
                 const response = await this.$http.get("/clients");
-                this.items = response.data;
+                this.items = {...response.data};
             } catch (e) {
                 console.error(e)
             }
@@ -26,7 +26,7 @@ export const useClientStore = defineStore("client", {
                     this.item = {...clientInterface};
                 } else {
                     const response = await this.$http.get(`/clients/${id}`);
-                    this.item = response.data;
+                    this.item = {...response.data};
                 }
             } catch (e) {
                 console.error(e)

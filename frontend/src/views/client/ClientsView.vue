@@ -1,6 +1,5 @@
 <template>
   <div class="clients">
-    <!-- titre et bouton ajouter -->
     <div class="row border-bottom pb-3 mb-3">
       <div class="col">
         <h1 class="h3">
@@ -18,12 +17,12 @@
       </div>
     </div>
 
-    <!-- tableau des factures -->
     <TableList v-if="!loading && clients">
       <template #thead>
         <th>Prénom</th>
         <th>Nom</th>
         <th>Entreprise</th>
+        <th>Date d'ajout</th>
         <th class="text-end">Actions</th>
       </template>
       <ClientTableRow
@@ -56,8 +55,8 @@ export default {
       loading: "loading",
     }),
   },
-  async mounted() {
-    await this.getClients();
+  async created() {
+    this.$watch(() => this.$route.params.id, this.getClients, {immediate: true})
   },
   methods: {
     ...mapActions(useClientStore, {

@@ -3,6 +3,7 @@
     <td class="align-middle">{{ client.firstName }}</td>
     <td class="align-middle">{{ client.lastName }}</td>
     <td class="align-middle">{{ client.companyName }}</td>
+    <td class="align-middle">{{ client.date }}</td>
     <td
         class="align-middle d-flex gap-2 justify-content-end align-items-center"
     >

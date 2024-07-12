@@ -50,8 +50,8 @@ export default {
       loading: "loading",
     }),
   },
-  async mounted() {
-    await this.getBills();
+  async created() {
+    this.$watch(() => this.$route.params.id, this.getBills, {immediate: true})
   },
   methods: {
     ...mapActions(useBillStore, {

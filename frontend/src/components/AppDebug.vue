@@ -1,12 +1,15 @@
 <template>
-  <p class="mt-5">
+  <p class="mt-5 d-flex gap-2">
     <input
-      class="form-check-input"
-      type="checkbox"
-      role="switch"
-      v-model="debug"
+        class="form-check-input"
+        type="checkbox"
+        role="switch"
+        v-model="debug"
+        id="myDebug"
     />
-    {{ name }}
+    <label for="myDebug">
+      {{ name }}
+    </label>
   </p>
   <pre v-if="debug">
     {{ datas }}

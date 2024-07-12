@@ -10,10 +10,14 @@
             <i class="fa-solid fa-angle-down me-2"/>Editer une facture
           </h1>
         </div>
-        <div v-if="!isNewBill" class="col text-end">
-          <button @click="onDeleteBill(bill)" class="btn btn-outline-danger">
+        <div class="col text-end">
+          <button v-if="!isNewBill" @click="onDeleteBill(bill)" class="btn btn-outline-danger me-2">
             <i class="fa-solid fa-trash me-2"/>
             Supprimer la facture
+          </button>
+          <button @click="onGoBack()" class="btn btn-outline-primary">
+            <i class="fa-solid fa-arrow-left me-2"/>
+            Retour
           </button>
         </div>
       </div>
@@ -62,7 +66,7 @@
               <option
                   v-for="client in clients"
                   :value="client"
-                  :key="client.idclient"
+                  :key="client.id"
               >
                 {{ client.firstName }} {{ client.lastName }}
               </option>
@@ -279,7 +283,7 @@
         </tr>
       </TableList>
 
-      <p class="text-end">
+      <div class="text-end">
         <button
             @click="onSave()"
             :disabled="formInvalid"
@@ -287,7 +291,7 @@
         >
           <i class="fa-solid fa-save me-2"/>Enregistrer
         </button>
-      </p>
+      </div>
 
       <AppDebug :datas="bill"/>
     </div>
@@ -300,9 +304,9 @@
 <script>
 import TableList from "@/components/tables/TableList.vue";
 import {billPrestationInterface} from "@/interfaces/bill.js";
-import {clients} from "@/seeds/clients.js";
 import {useBillStore} from "@/stores/bill.js";
-import {mapActions, mapState, mapWritableState} from "pinia";
+import {mapActions, mapState} from "pinia";
+import {useClientStore} from "@/stores/client.js";
 
 export default {
   components: {
@@ -316,17 +320,21 @@ export default {
   },
   data() {
     return {
-      clients,
-      error: false,
-    };
+      error: false
+    }
   },
   beforeMount() {
+    this.getClients();
     this.setBill(this.id);
   },
   computed: {
     ...mapState(useBillStore, {
       bill: "item",
       loading: "loading",
+    }),
+    ...mapState(useClientStore, {
+      clients: 'items',
+      loading: "loading"
     }),
     isNewBill() {
       return this.id === "new";
@@ -351,12 +359,18 @@ export default {
       };
     },
   },
+  async created() {
+    this.$watch(() => this.$route.params.id, this.getClients, {immediate: true})
+  },
   methods: {
     ...mapActions(useBillStore, {
       setBill: "setItem",
       updateBill: "updateItem",
       createBill: "createItem",
       deleteBill: "deleteItem",
+    }),
+    ...mapActions(useClientStore, {
+      getClients: "getItems",
     }),
 
     onAddPrestation(index) {
@@ -381,6 +395,10 @@ export default {
       }
     },
 
+    onGoBack() {
+      this.$router.push({name: "bills"});
+    },
+
     onDeleteBill() {
       this.deleteBill(this.id);
       this.$router.push({name: "bills"});
@@ -400,18 +418,15 @@ export default {
     },
   },
   watch: {
-    // à chaque mise à jour des prestations, je mets à jour le total
     "bill.prestations": {
       handler() {
         this.updateTotal();
       },
       deep: true,
     },
-    // de même sur la remise client
     "bill.discount"() {
       this.updateTotal();
     },
-    // de même sur le déjà payé
     "bill.paid"() {
       this.updateTotal();
     },
