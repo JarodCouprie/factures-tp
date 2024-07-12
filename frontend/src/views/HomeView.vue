@@ -22,12 +22,30 @@
       </div>
     </div>
   </div>
+  <pre>
+    {{ items }}
+  </pre>
 </template>
 
 <script>
 
+import {mapActions, mapState} from "pinia";
+import {useDashboardStore} from "@/stores/dashboard.js";
+
 export default {
-  computed: {},
-  methods: {},
+  computed: {
+    ...mapState(useDashboardStore, {
+      items: "items",
+      loading: "loading",
+    }),
+  },
+  async created() {
+    this.$watch(() => this.$route.params.id, this.getItems, {immediate: true})
+  },
+  methods: {
+    ...mapActions(useDashboardStore, {
+      getItems: "getItems",
+    }),
+  },
 };
 </script>

@@ -3,8 +3,10 @@ import {defineStore} from "pinia";
 export const useDashboardStore = defineStore("dashboard", {
     state: () => ({
         items: {
+            bills: {},
             clients: {},
-            bills: {}
+            billsNumber: 0,
+            billsAmount: 0,
         },
         loading: false,
     }),

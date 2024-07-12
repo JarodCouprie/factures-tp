@@ -2,6 +2,7 @@ import express from "express";
 import bills from "./routes/bill.mjs";
 import clients from "./routes/client.mjs";
 import cors from 'cors';
+import dashboard from "./routes/dashboard.mjs";
 
 const app = express()
 const port = 3000
@@ -13,6 +14,7 @@ app.use(cors({
 app.use(express.json())
 app.use("/bills", bills)
 app.use("/clients", clients)
+app.use("/dashboard", dashboard)
 
 app.get('/', (req, res) => {
     res.send('Hi mom!')
