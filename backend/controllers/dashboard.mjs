@@ -12,20 +12,47 @@ const getItems = async (req, res) => {
         const bills = fs.readFileSync(BILL_PATH_FILE, "utf-8");
         const clients = fs.readFileSync(CLIENT_PATH_FILE, "utf-8");
 
-        const dataBills = JSON.parse(bills).splice(0, 2);
-        const dataClients = JSON.parse(clients).splice(0, 2);
+        const dataBills = JSON.parse(bills).splice(0, 5);
+        const dataClients = JSON.parse(clients).splice(0, 5);
 
-        const billsNumber = JSON.parse(bills).length;
+        const billsNumber = JSON.parse(bills).filter(bill => {
+            let currentDateYear = new Date().getFullYear();
+            let billDateYear = new Date(bill.date).getFullYear();
+            return currentDateYear === billDateYear;
+        }).length;
+
         const initialValue = 0;
-        const billsAmount = JSON.parse(bills).reduce(
+        const billsAmount = JSON.parse(bills).filter(bill => {
+            let currentDateYear = new Date().getFullYear();
+            let billDateYear = new Date(bill.date).getFullYear();
+            return currentDateYear === billDateYear;
+        }).reduce(
             (accumulator, bill) => accumulator + bill.totalTTC, initialValue,
         )
+
+        const totalBills = JSON.parse(bills).length;
+
+        const totalBillPreviousYear = JSON.parse(bills).filter(bill => {
+            let previousDateYear = new Date().getFullYear() - 1;
+            let billDateYear = new Date(bill.date).getFullYear();
+            return billDateYear === previousDateYear && bill.paid !== bill.totalTTC;
+        }).length / totalBills;
+
+        const totalBillPaid = JSON.parse(bills).filter(bill => bill.paid === bill.totalTTC).length / totalBills;
+        const totalBillBilled = JSON.parse(bills).filter(bill => {
+            let currentDateYear = new Date().getFullYear();
+            let billPreviousDateYear = new Date(bill.date).getFullYear();
+            return currentDateYear === billPreviousDateYear && bill.paid !== bill.totalTTC;
+        }).length / totalBills;
 
         res.json({
             bills: dataBills,
             clients: dataClients,
             billsNumber,
-            billsAmount
+            billsAmount,
+            totalBillPaid,
+            totalBillBilled,
+            totalBillPreviousYear
         })
     } catch (error) {
         res.sendStatus(500)

@@ -1,20 +1,22 @@
 <template>
   <tr>
-    <td class="align-middle">{{ bill.date }}</td>
-    <td class="align-middle">{{ bill.description }}</td>
-    <td class="align-middle">{{ clientName }}</td>
-    <td class="align-middle text-end">{{ bill.totalHT.toFixed(2) }} HT</td>
-    <td class="align-middle text-end">{{ bill.totalTTC.toFixed(2) }} TTC</td>
-    <td
-      class="align-middle d-flex gap-2 justify-content-end align-items-center"
-    >
-      <button @click="onDelete()" class="btn btn-outline-danger">
-        <i class="fa-solid fa-trash me-2" />Supprimer
-      </button>
-      <button @click="onEdit()" class="btn btn-outline-info">
-        <i class="fa-solid fa-pen me-2" />Editer
-      </button>
-    </td>
+    <slot name="bill-td">
+      <td class="align-middle">{{ bill.date }}</td>
+      <td class="align-middle">{{ bill.description }}</td>
+      <td class="align-middle">{{ clientName }}</td>
+      <td class="align-middle text-end">{{ bill.totalHT.toFixed(2) }} HT</td>
+      <td class="align-middle text-end">{{ bill.totalTTC.toFixed(2) }} TTC</td>
+      <td
+          class="align-middle d-flex gap-2 justify-content-end align-items-center"
+      >
+        <button @click="onDelete()" class="btn btn-outline-danger">
+          <i class="fa-solid fa-trash me-2"/>Supprimer
+        </button>
+        <button @click="onEdit()" class="btn btn-outline-info">
+          <i class="fa-solid fa-pen me-2"/>Editer
+        </button>
+      </td>
+    </slot>
   </tr>
 </template>
 

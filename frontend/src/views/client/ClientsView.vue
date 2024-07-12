@@ -27,7 +27,7 @@
       </template>
       <ClientTableRow
           v-for="client in clients"
-          :key="clients.id"
+          :key="client.id"
           :client="client"
           @edit="$router.push({ name: 'edit-client', params: { id: $event.id } })"
           @delete="deleteClient($event.id)"
