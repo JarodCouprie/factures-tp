@@ -36,14 +36,14 @@ const getItems = async (req, res) => {
             let previousDateYear = new Date().getFullYear() - 1;
             let billDateYear = new Date(bill.date).getFullYear();
             return billDateYear === previousDateYear && bill.paid !== bill.totalTTC;
-        }).length / totalBills;
+        }).length / totalBills * 100;
 
-        const totalBillPaid = JSON.parse(bills).filter(bill => bill.paid === bill.totalTTC).length / totalBills;
+        const totalBillPaid = JSON.parse(bills).filter(bill => bill.paid === bill.totalTTC).length / totalBills * 100;
         const totalBillBilled = JSON.parse(bills).filter(bill => {
             let currentDateYear = new Date().getFullYear();
             let billPreviousDateYear = new Date(bill.date).getFullYear();
             return currentDateYear === billPreviousDateYear && bill.paid !== bill.totalTTC;
-        }).length / totalBills;
+        }).length / totalBills * 100;
 
         res.json({
             bills: dataBills,
